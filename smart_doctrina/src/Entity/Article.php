@@ -7,9 +7,12 @@ use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(itemOperations={
+ * @ApiResource(
+ *     denormalizationContext={"groups"={"article"}},
+ *     itemOperations={
  *         "delete",
  *         "patch",
  *         "put",
@@ -65,37 +68,44 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("article")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("article")
      */
     private $reference;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("article")
      */
     private $content;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("article")
      */
     private $draft;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("article")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("article")
      */
     private $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("article")
      */
     private $user;
 

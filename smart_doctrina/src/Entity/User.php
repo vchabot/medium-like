@@ -2,20 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User
 {
     /**
+     * @ApiProperty(identifier=true)
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("article")
      */
     private $id;
 
@@ -63,6 +69,11 @@ class User
      * @ORM\OneToMany(targetEntity=Reaction::class, mappedBy="user")
      */
     private $reactions;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $accessToken;
 
     public function __construct()
     {
@@ -234,6 +245,18 @@ class User
                 $reaction->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAccessToken(): ?string
+    {
+        return $this->accessToken;
+    }
+
+    public function setAccessToken(?string $accessToken): self
+    {
+        $this->accessToken = $accessToken;
 
         return $this;
     }
